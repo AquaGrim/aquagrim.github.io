@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yukinotempe RPG Gateway</title>
+    <script>
+        // Endpoint server aktif (dapat diperbarui saat migrasi VM)
+        const ACTIVE_BACKEND = "https://3000-agqwrsykco5jy5rhidnm2xqkaa.instabox.tech";
+        
+        const path = window.location.pathname;
+        const search = window.location.search;
+
+        // Cek apakah URL mengakses /yukinotempe/player/:id atau /player/:id
+        const playerMatch = path.match(/\/(?:yukinotempe\/)?player\/?([0-9]+)?/);
+        
+        let targetId = null;
+        if (playerMatch && playerMatch[1]) {
+            targetId = playerMatch[1];
+        } else {
+            const urlParams = new URLSearchParams(search);
+            if (urlParams.has('id')) {
+                targetId = urlParams.get('id').replace(/[^0-9]/g, '');
+            }
+        }
+
+        if (targetId) {
+            window.location.replace(`${ACTIVE_BACKEND}/player/${targetId}`);
+        } else if (path.includes('/yukinotempe') || path.includes('/player')) {
+            window.location.replace('/yukinotempe/player/');
+        } else {
+            window.location.replace('/');
+        }
+    </script>
+</head>
+<body style="background:#06080e;color:#94a3b8;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
+    <p>Mengalihkan ke gateway RPG...</p>
+</body>
+</html>
